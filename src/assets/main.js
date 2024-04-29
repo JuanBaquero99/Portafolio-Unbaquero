@@ -1,20 +1,26 @@
-const API = 'https://github-repos.p.rapidapi.com/search?user=JuanBaquero99'
+const axios = require('axios');
 
-const fetch = require('node-fetch');
+// Nombre de usuario de GitHub
+const username = "JuanBaquero99";
 
-const url = 'https://github-repos.p.rapidapi.com/search?user=JuanBaquero99';
-const options = {
-  method: 'GET',
-  headers: {
-    'X-RapidAPI-Key': '30417caa7fmsh97acc4550ac5433p16c3c8jsn27a5628b5737',
-    'X-RapidAPI-Host': 'github-repos.p.rapidapi.com'
-  }
-};
+// URL del endpoint de la API para los repositorios públicos
+const url = `https://api.github.com/users/${username}/repos?type=public`;
 
-try {
-	const response = await fetch(url, options);
-	const result = await response.text();
-	console.log(result);
-} catch (error) {
-	console.error(error);
-}
+// Realizar la solicitud GET
+axios.get(url)
+  .then(response => {
+    // Verificar el código de estado de la respuesta
+    if (response.status === 200) {
+      // Obtener los repositorios de la respuesta
+      const repos = response.data;
+      // Hacer algo con los repositorios obtenidos
+      repos.forEach(repo => {
+        console.log(repo.name);  // Imprimir el nombre del repositorio
+      });
+    } else {
+      console.error(`Error: ${response.status}`);
+    }
+  })
+  .catch(error => {
+    console.error('Error al realizar la solicitud:', error);
+  });

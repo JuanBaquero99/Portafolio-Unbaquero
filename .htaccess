@@ -1,1 +1,0 @@
-RewriteRule ^(.*)$ SRC/$1 [L,QSA]
